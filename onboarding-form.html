@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bordman — Client Onboarding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FAFAF8; --navy: #1B3A5C; --dark: #1C1C1A;
+      --muted: #9A9080; --border: #E8E4DC; --white: #fff;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); padding: 40px 16px; }
+    .wrap { max-width: 700px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 48px; }
+    .logo { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.03em; }
+    h1 { font-size: 28px; font-weight: 700; color: var(--dark); margin-top: 12px; letter-spacing: -0.02em; }
+    .subtitle { color: var(--muted); font-size: 15px; margin-top: 8px; }
+    .section { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 28px 28px; margin-bottom: 20px; }
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--navy); margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 13px; font-weight: 500; color: #5A5450; }
+    label .req { color: #E53E3E; }
+    input, textarea, select {
+      border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px;
+      font-family: inherit; font-size: 15px; color: var(--dark);
+      background: var(--bg); outline: none; width: 100%;
+      transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--navy); background: var(--white); }
+    textarea { resize: vertical; }
+    .radio-group { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+    .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: #4A4640; }
+    input[type="radio"] { width: auto; }
+    .submit-btn {
+      display: block; width: 100%; padding: 16px; background: var(--navy);
+      color: var(--white); border: none; border-radius: 8px; font-size: 16px;
+      font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px;
+      transition: opacity 0.15s;
+    }
+    .submit-btn:hover { opacity: 0.88; }
+    .note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="header">
+      <div class="logo">bordman</div>
+      <h1>Welcome aboard — let's build your agent</h1>
+      <p class="subtitle">Fill this out and we'll have your AI receptionist live within 48 hours.</p>
+    </div>
+
+    <form name="onboarding" method="POST" data-netlify="true" action="/onboarding-thank-you">
+      <input type="hidden" name="form-name" value="onboarding" />
+
+      <!-- Business Info -->
+      <div class="section">
+        <div class="section-title">Your Business</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Business name <span class="req">*</span></label>
+            <input type="text" name="business_name" required placeholder="Smith Driving School" />
+          </div>
+          <div class="form-group">
+            <label>Owner name <span class="req">*</span></label>
+            <input type="text" name="owner_name" required placeholder="Jane Smith" />
+          </div>
+          <div class="form-group">
+            <label>Phone number <span class="req">*</span></label>
+            <input type="tel" name="phone" required placeholder="(555) 000-0000" />
+          </div>
+          <div class="form-group">
+            <label>Email address <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="jane@smithdriving.com" />
+          </div>
+          <div class="form-group full">
+            <label>Business address</label>
+            <input type="text" name="address" placeholder="123 Main St, Detroit, MI 48201" />
+          </div>
+          <div class="form-group full">
+            <label>Website (if you have one)</label>
+            <input type="url" name="website" placeholder="https://smithdrivingschool.com" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Programs & Pricing -->
+      <div class="section">
+        <div class="section-title">Programs & Pricing</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>What programs or services do you offer? <span class="req">*</span></label>
+            <textarea name="programs" rows="3" required placeholder="e.g. Teen driver education (6 hours behind the wheel + classroom), Adult refresher course, Road test preparation, In-car lessons ($65/hour)"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>What are your prices?</label>
+            <textarea name="pricing" rows="3" placeholder="e.g. Full teen program: $400. Adult lessons: $65/hour. Road test package: $150."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Are there any current promotions or discounts?</label>
+            <textarea name="promotions" rows="2" placeholder="e.g. Spring special — $25 off full teen package through June"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scheduling -->
+      <div class="section">
+        <div class="section-title">Scheduling & Availability</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>What are your available hours for lessons/appointments?</label>
+            <textarea name="hours" rows="2" placeholder="e.g. Mon–Fri 9am–7pm, Sat 9am–4pm, closed Sunday"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>How do customers schedule with you? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="scheduling_method" value="call_back" required /> Owner calls them back</label>
+              <label class="radio-label"><input type="radio" name="scheduling_method" value="text_back" /> Owner texts them back</label>
+              <label class="radio-label"><input type="radio" name="scheduling_method" value="online" /> Online booking link</label>
+              <label class="radio-label"><input type="radio" name="scheduling_method" value="other" /> Other</label>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Online booking link (if applicable)</label>
+            <input type="url" name="booking_url" placeholder="https://calendly.com/..." />
+          </div>
+          <div class="form-group full">
+            <label>How far out are you currently booked?</label>
+            <input type="text" name="lead_time" placeholder="e.g. 2 weeks, booked through May, immediate availability" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="section">
+        <div class="section-title">Payment</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>How do your clients pay? (check all that apply)</label>
+            <div class="radio-group" style="flex-wrap:wrap;">
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="zelle" /> Zelle</label>
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="venmo" /> Venmo</label>
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="cashapp" /> Cash App</label>
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="cash" /> Cash</label>
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="card" /> Credit/debit card</label>
+              <label class="radio-label"><input type="checkbox" name="payment_methods" value="check" /> Check</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Zelle number or email (if used)</label>
+            <input type="text" name="zelle" placeholder="(555) 000-0000 or name@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Venmo handle (if used)</label>
+            <input type="text" name="venmo" placeholder="@username" />
+          </div>
+          <div class="form-group">
+            <label>Cash App handle (if used)</label>
+            <input type="text" name="cashapp" placeholder="$username" />
+          </div>
+          <div class="form-group">
+            <label>Deposit amount (if required)</label>
+            <input type="text" name="deposit" placeholder="e.g. $100 deposit to hold spot" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Preferences -->
+      <div class="section">
+        <div class="section-title">Your AI Agent</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Preferred agent name <span class="req">*</span></label>
+            <input type="text" name="agent_name" value="Sarah" required placeholder="Sarah" />
+          </div>
+          <div class="form-group">
+            <label>Agent gender preference</label>
+            <select name="agent_gender">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="either">No preference</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Languages spoken (other than English)</label>
+            <input type="text" name="languages" placeholder="e.g. Spanish, Arabic, Hindi" />
+          </div>
+          <div class="form-group full">
+            <label>What should the agent say it is? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="agent_role" value="receptionist" required /> "I'm the front desk / receptionist"</label>
+              <label class="radio-label"><input type="radio" name="agent_role" value="assistant" /> "I'm an assistant for [owner name]"</label>
+              <label class="radio-label"><input type="radio" name="agent_role" value="custom" /> Custom — describe below</label>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Custom agent introduction (optional)</label>
+            <textarea name="agent_intro" rows="2" placeholder="e.g. 'Hi, thanks for calling Smith Driving School, this is Sarah, how can I help you today?'"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Anything specific the agent should always say or never say?</label>
+            <textarea name="agent_notes" rows="3" placeholder="e.g. Always mention we offer flexible evening slots. Never guarantee same-week availability. Always confirm the caller's name and number before ending."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Preferences -->
+      <div class="section">
+        <div class="section-title">After-Call Notifications</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Send call summary to this phone <span class="req">*</span></label>
+            <input type="tel" name="notify_phone" required placeholder="(810) 305-4392" />
+          </div>
+          <div class="form-group">
+            <label>Send call summary to this email <span class="req">*</span></label>
+            <input type="email" name="notify_email" required placeholder="you@yourbusiness.com" />
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit — let's get Sarah live</button>
+      <p class="note">Alex will review this and reach out within 24 hours to confirm everything before going live.</p>
+    </form>
+
+  </div>
+</body>
+</html>
