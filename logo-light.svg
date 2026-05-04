@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 120" width="380" height="120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 18 320 68" width="320" height="68">
   <!-- Background -->
-  <rect width="380" height="120" fill="#FAFAF8" rx="8"/>
+  <rect width="380" height="120" fill="#FAFAF8"/>
 
   <!-- Thin navy accent bar top-left -->
   <rect x="36" y="24" width="44" height="3" fill="#1B3A5C" rx="2"/>
