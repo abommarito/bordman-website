@@ -378,7 +378,7 @@ textarea { resize: vertical; }
   gap: 40px;
 }
 .footer-brand .logo { color: var(--white); }
-.footer-wordmark { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: #FAFAF8; }
+.footer-wordmark { display: block; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: #FAFAF8; }
 .footer-brand p { font-size: 13px; color: #5A5A58; margin-top: 6px; }
 .footer-links {
   display: flex;
