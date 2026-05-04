@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 600" width="1050" height="600">
+  <rect width="1050" height="600" fill="#FAFAF8"/>
+
+  <!-- Navy accent bar -->
+  <rect x="72" y="90" width="72" height="3" fill="#1B3A5C" rx="1"/>
+
+  <!-- Wordmark — Inter 700 matching website -->
+  <text x="66" y="218" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="108" font-weight="700" letter-spacing="-3" fill="#1C1C1A">bordman</text>
+
+  <!-- Subtitle -->
+  <text x="72" y="264" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="18" font-weight="400" letter-spacing="5" fill="#9A9080">AI VOICE AGENTS FOR LOCAL BUSINESS</text>
+
+  <!-- Name -->
+  <text x="72" y="500" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="30" font-weight="400" fill="#1C1C1A">Alex Bommarito</text>
+
+  <!-- Title -->
+  <text x="72" y="536" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="17" font-weight="400" letter-spacing="3" fill="#9A9080">OWNER</text>
+
+  <!-- Contact info -->
+  <text x="978" y="490" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="22" font-weight="400" fill="#1C1C1A" text-anchor="end">(248) 289-3081</text>
+  <text x="978" y="520" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="22" font-weight="400" fill="#1C1C1A" text-anchor="end">alex@bordman.ai</text>
+  <text x="978" y="550" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="22" font-weight="400" fill="#1C1C1A" text-anchor="end">bordman.ai</text>
+</svg>

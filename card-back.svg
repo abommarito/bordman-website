@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 600" width="1050" height="600">
+  <rect width="1050" height="600" fill="#111110"/>
+
+  <!-- "CALL OUR LIVE DEMO" — white -->
+  <text x="525" y="228" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="22" font-weight="400" letter-spacing="6" fill="#FAFAF8" text-anchor="middle">CALL OUR LIVE DEMO</text>
+
+  <!-- Navy accent bar -->
+  <rect x="463" y="248" width="124" height="3" fill="#1B3A5C" rx="1"/>
+
+  <!-- Phone number -->
+  <text x="525" y="370" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="96" font-weight="700" letter-spacing="-2" fill="#FAFAF8" text-anchor="middle">(586) 500-5166</text>
+
+  <!-- Tagline -->
+  <text x="525" y="430" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="400" fill="#FAFAF8" opacity="0.5" text-anchor="middle">Every call. Answered.</text>
+</svg>
