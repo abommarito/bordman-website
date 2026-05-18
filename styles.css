@@ -109,6 +109,13 @@ p { color: #4A4640; }
 }
 .nav-cta:hover { background: var(--navy); color: var(--white); }
 
+/* Nav-scoped primary button (mailto demo CTA in top-right) */
+.nav-inner .btn-primary {
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
 /* ── Hero ── */
 .hero {
   padding: 96px 0 80px;
@@ -149,30 +156,27 @@ p { color: #4A4640; }
   padding: 72px 0;
   text-align: center;
 }
-.problem-stat {
+.problem-anecdote {
+  max-width: 720px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 20px;
+  text-align: center;
 }
-.stat-number {
-  font-size: clamp(40px, 6vw, 64px);
-  font-weight: 700;
+.anecdote-lead {
+  font-size: clamp(28px, 4.2vw, 44px);
+  font-weight: 600;
   color: var(--white);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
-.stat-label {
+.anecdote-body {
   font-size: 18px;
   color: #B8B0A0;
-  max-width: 480px;
-}
-.problem-body {
-  font-size: 17px;
-  color: #9A9080;
-  max-width: 520px;
+  line-height: 1.65;
+  max-width: 620px;
   margin: 0 auto;
-  line-height: 1.7;
 }
 
 /* ── ROI ── */
@@ -364,6 +368,38 @@ input:focus, textarea:focus { border-color: var(--navy); }
 textarea { resize: vertical; }
 .contact-form .btn-navy { margin-top: 4px; padding: 15px; font-size: 15px; }
 
+/* Simple contact (form removed; single CTA) */
+.contact-inner-simple {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.contact-inner-simple h2 {
+  font-size: clamp(26px, 3.5vw, 38px);
+  color: var(--white);
+  margin: 0;
+}
+.contact-lede {
+  font-size: 17px;
+  color: #B8B0A0;
+  line-height: 1.6;
+  margin: 0;
+}
+.contact-email {
+  font-size: 14px;
+  color: #9A9080;
+  margin-top: 4px;
+}
+.contact-email a {
+  color: #A8C0D8;
+  text-decoration: none;
+}
+.contact-email a:hover { color: var(--white); }
+
 /* ── Footer ── */
 .footer {
   background: #141412;
@@ -417,5 +453,6 @@ textarea { resize: vertical; }
   .hero { padding: 64px 0 56px; }
   .form-row { grid-template-columns: 1fr; }
   .nav-cta { display: none; }
+  .nav-inner .btn-primary { display: none; }
   .demo-cta .btn-primary { font-size: 18px; padding: 16px 32px; }
 }
