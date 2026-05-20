@@ -3,232 +3,464 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bordman — Client Onboarding</title>
+  <title>Bordman — Client Intake</title>
+  <meta name="description" content="Bordman client intake form. Everything we need to build your AI receptionist." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #FAFAF8; --navy: #1B3A5C; --dark: #1C1C1A;
-      --muted: #9A9080; --border: #E8E4DC; --white: #fff;
+    /* Page-specific layout for the intake form. Reuses styles.css tokens. */
+    body { padding: 56px 16px; }
+    .intake-wrap { max-width: 720px; margin: 0 auto; }
+
+    .intake-header { text-align: center; margin-bottom: 40px; }
+    .intake-logo {
+      font-size: 22px; font-weight: 700; color: var(--navy);
+      letter-spacing: -0.03em; margin-bottom: 18px;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); padding: 40px 16px; }
-    .wrap { max-width: 700px; margin: 0 auto; }
-    .header { text-align: center; margin-bottom: 48px; }
-    .logo { font-size: 22px; font-weight: 700; color: var(--navy); letter-spacing: -0.03em; }
-    h1 { font-size: 28px; font-weight: 700; color: var(--dark); margin-top: 12px; letter-spacing: -0.02em; }
-    .subtitle { color: var(--muted); font-size: 15px; margin-top: 8px; }
-    .section { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 28px 28px; margin-bottom: 20px; }
-    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--navy); margin-bottom: 20px; }
+    .intake-title {
+      font-size: clamp(28px, 4vw, 36px);
+      color: var(--dark); margin-bottom: 16px;
+    }
+    .intake-intro {
+      font-size: 16px; line-height: 1.65; color: #5A5450;
+      max-width: 560px; margin: 0 auto;
+    }
+
+    .section {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 28px; margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--navy); margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 13px; color: var(--muted);
+      margin-bottom: 20px; line-height: 1.5;
+    }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group.full { grid-column: 1 / -1; }
     label { font-size: 13px; font-weight: 500; color: #5A5450; }
-    label .req { color: #E53E3E; }
-    input, textarea, select {
-      border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px;
-      font-family: inherit; font-size: 15px; color: var(--dark);
-      background: var(--bg); outline: none; width: 100%;
-      transition: border-color 0.15s;
+    label .req { color: #B53E3E; margin-left: 2px; }
+    label .opt { color: var(--muted); font-weight: 400; margin-left: 4px; }
+    .field-hint {
+      font-size: 12px; color: var(--muted); margin-top: -2px;
     }
-    input:focus, textarea:focus, select:focus { border-color: var(--navy); background: var(--white); }
-    textarea { resize: vertical; }
-    .radio-group { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
-    .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; color: #4A4640; }
-    input[type="radio"] { width: auto; }
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="url"], textarea, select {
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 10px 12px; font-family: inherit; font-size: 15px;
+      color: var(--dark); background: var(--bg); outline: none;
+      width: 100%; transition: border-color 0.15s, background 0.15s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--navy); background: var(--white);
+    }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+    .check-group, .radio-group {
+      display: flex; flex-direction: column; gap: 8px; margin-top: 4px;
+    }
+    .check-group.inline, .radio-group.inline {
+      flex-direction: row; flex-wrap: wrap; gap: 14px 20px;
+    }
+    .check-label, .radio-label {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 14px; color: #4A4640;
+    }
+    input[type="radio"], input[type="checkbox"] {
+      width: auto; accent-color: var(--navy);
+    }
+
+    .submit-row { margin-top: 28px; }
     .submit-btn {
-      display: block; width: 100%; padding: 16px; background: var(--navy);
-      color: var(--white); border: none; border-radius: 8px; font-size: 16px;
-      font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 8px;
-      transition: opacity 0.15s;
+      display: block; width: 100%; padding: 16px;
+      background: var(--navy); color: var(--white);
+      border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: opacity 0.15s;
     }
-    .submit-btn:hover { opacity: 0.88; }
-    .note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
-    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+    .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .submit-error {
+      text-align: center; color: #B53E3E;
+      font-size: 14px; margin-top: 12px; display: none;
+    }
+
+    .intake-footer {
+      text-align: center; margin-top: 32px;
+      font-size: 13px; color: var(--muted);
+    }
+    .intake-footer a { color: var(--navy); text-decoration: none; }
+    .intake-footer a:hover { text-decoration: underline; }
+
+    .confirmation {
+      display: none;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 56px 28px; text-align: center;
+    }
+    .confirmation h2 {
+      font-size: 24px; color: var(--dark); margin-bottom: 12px;
+    }
+    .confirmation p {
+      font-size: 16px; color: #5A5450; line-height: 1.6;
+      max-width: 420px; margin: 0 auto;
+    }
+
+    @media (max-width: 560px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .section { padding: 22px 18px; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="intake-wrap">
 
-    <div class="header">
-      <div class="logo">bordman</div>
-      <h1>Welcome aboard — let's build your agent</h1>
-      <p class="subtitle">Fill this out and we'll have your AI receptionist live within 48 hours.</p>
+    <div class="intake-header">
+      <div class="intake-logo">bordman</div>
+      <h1 class="intake-title">Client Intake</h1>
+      <p class="intake-intro">
+        Welcome to Bordman. We're going to build your AI receptionist this week. This form gives us everything we need. It takes about 10 minutes. Once you submit it, you'll hear from Alex within 48 hours with a demo of your receptionist. We'll do a quick 15-minute review call to tune anything that isn't quite right, then we go live.
+      </p>
     </div>
 
-    <form name="onboarding" method="POST" data-netlify="true" action="/onboarding-thank-you">
-      <input type="hidden" name="form-name" value="onboarding" />
+    <form id="intake-form" method="POST" action="https://formspree.io/f/mbdwlzgl">
 
-      <!-- Business Info -->
+      <input type="hidden" name="_subject" value="New Bordman client intake submission" />
+
+      <!-- Section 1: Business basics -->
       <div class="section">
-        <div class="section-title">Your Business</div>
+        <div class="section-title">1. Business basics</div>
+        <div class="section-sub">The essentials about the business itself.</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>Business name <span class="req">*</span></label>
-            <input type="text" name="business_name" required placeholder="Smith Driving School" />
-          </div>
-          <div class="form-group">
-            <label>Owner name <span class="req">*</span></label>
-            <input type="text" name="owner_name" required placeholder="Jane Smith" />
-          </div>
-          <div class="form-group">
-            <label>Phone number <span class="req">*</span></label>
-            <input type="tel" name="phone" required placeholder="(555) 000-0000" />
-          </div>
-          <div class="form-group">
-            <label>Email address <span class="req">*</span></label>
-            <input type="email" name="email" required placeholder="jane@smithdriving.com" />
+          <div class="form-group full">
+            <label>Full business name <span class="req">*</span></label>
+            <input type="text" name="business_name" required placeholder="e.g., Acme Cleaning" />
+            <p class="field-hint">How you want callers to hear it — e.g., 'Acme Cleaning' (not 'Acme Cleaning, Inc.').</p>
           </div>
           <div class="form-group full">
-            <label>Business address</label>
-            <input type="text" name="address" placeholder="123 Main St, Detroit, MI 48201" />
+            <label>Business name pronunciation guide <span class="opt">(optional)</span></label>
+            <input type="text" name="business_name_pronunciation" placeholder='e.g. "ack-mee"' />
           </div>
           <div class="form-group full">
-            <label>Website (if you have one)</label>
-            <input type="url" name="website" placeholder="https://smithdrivingschool.com" />
+            <label>Business address <span class="req">*</span></label>
+            <input type="text" name="business_address" required placeholder="Street, city, state, ZIP" />
+          </div>
+          <div class="form-group">
+            <label>Website URL <span class="opt">(optional)</span></label>
+            <input type="url" name="website" placeholder="https://" />
+          </div>
+          <div class="form-group">
+            <label>Social media links <span class="opt">(optional)</span></label>
+            <input type="text" name="socials" placeholder="Instagram, Facebook, TikTok, etc." />
+          </div>
+          <div class="form-group full">
+            <label>Business hours <span class="req">*</span></label>
+            <input type="text" name="business_hours" required placeholder='e.g. "Monday–Saturday 9 AM to 7 PM, closed Sundays"' />
+          </div>
+          <div class="form-group full">
+            <label>Existing business phone number <span class="req">*</span></label>
+            <input type="tel" name="business_phone" required placeholder="(555) 000-0000" />
+            <p class="field-hint">This is the number that will forward to your AI receptionist.</p>
           </div>
         </div>
       </div>
 
-      <!-- Programs & Pricing -->
+      <!-- Section 2: About you -->
       <div class="section">
-        <div class="section-title">Programs & Pricing</div>
+        <div class="section-title">2. About you</div>
+        <div class="section-sub">How the receptionist should refer to you and reach you.</div>
         <div class="form-grid">
-          <div class="form-group full">
-            <label>What programs or services do you offer? <span class="req">*</span></label>
-            <textarea name="programs" rows="3" required placeholder="e.g. Teen driver education (6 hours behind the wheel + classroom), Adult refresher course, Road test preparation, In-car lessons ($65/hour)"></textarea>
+          <div class="form-group">
+            <label>Owner first name <span class="req">*</span></label>
+            <input type="text" name="owner_first_name" required placeholder="e.g., David" />
+            <p class="field-hint">How the receptionist should refer to you on calls.</p>
+          </div>
+          <div class="form-group">
+            <label>Owner name pronunciation guide <span class="opt">(optional)</span></label>
+            <input type="text" name="owner_name_pronunciation" placeholder='e.g. "DAY-vid"' />
           </div>
           <div class="form-group full">
-            <label>What are your prices?</label>
-            <textarea name="pricing" rows="3" placeholder="e.g. Full teen program: $400. Adult lessons: $65/hour. Road test package: $150."></textarea>
+            <label>Your pronouns <span class="req">*</span></label>
+            <div class="radio-group inline">
+              <label class="radio-label"><input type="radio" name="owner_pronouns" value="he/him" required /> he/him</label>
+              <label class="radio-label"><input type="radio" name="owner_pronouns" value="she/her" /> she/her</label>
+              <label class="radio-label"><input type="radio" name="owner_pronouns" value="they/them" /> they/them</label>
+            </div>
+            <p class="field-hint">Helps the receptionist sound natural when referring to you.</p>
           </div>
-          <div class="form-group full">
-            <label>Are there any current promotions or discounts?</label>
-            <textarea name="promotions" rows="2" placeholder="e.g. Spring special — $25 off full teen package through June"></textarea>
+          <div class="form-group">
+            <label>Best email to reach you <span class="req">*</span></label>
+            <input type="email" name="owner_email" required placeholder="you@yourbusiness.com" />
+          </div>
+          <div class="form-group">
+            <label>Best phone to reach you <span class="req">*</span></label>
+            <input type="tel" name="owner_phone" required placeholder="(555) 000-0000" />
+            <p class="field-hint">In case it's different from the business number.</p>
           </div>
         </div>
       </div>
 
-      <!-- Scheduling -->
+      <!-- Section 3: Your services -->
       <div class="section">
-        <div class="section-title">Scheduling & Availability</div>
+        <div class="section-title">3. Your services</div>
+        <div class="section-sub">What you offer and what it costs.</div>
         <div class="form-grid">
           <div class="form-group full">
-            <label>What are your available hours for lessons/appointments?</label>
-            <textarea name="hours" rows="2" placeholder="e.g. Mon–Fri 9am–7pm, Sat 9am–4pm, closed Sunday"></textarea>
+            <label>List every service you offer <span class="req">*</span></label>
+            <textarea name="services" rows="6" required placeholder="For each service: one-sentence description in your own words, plus the price."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Booking & payment -->
+      <div class="section">
+        <div class="section-title">4. How customers book and pay</div>
+        <div class="section-sub">Walk us through how someone becomes a customer.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Booking method <span class="req">*</span></label>
+            <textarea name="booking_method" rows="3" required placeholder="How do customers schedule with you today? Phone call, online portal, walk-in, text? Walk us through it."></textarea>
           </div>
           <div class="form-group full">
-            <label>How do customers schedule with you? <span class="req">*</span></label>
+            <label>Payment methods you accept <span class="req">*</span></label>
+            <div class="check-group inline">
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Cash" /> Cash</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Check" /> Check</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Zelle" /> Zelle</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Venmo" /> Venmo</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Cash App" /> Cash App</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Credit Card (Stripe/Square)" /> Credit card (Stripe/Square)</label>
+              <label class="check-label"><input type="checkbox" name="payment_methods" value="Other" id="payment-other-checkbox" /> Other</label>
+            </div>
+            <input type="text" name="payment_methods_other" id="payment-other-input" placeholder="Please specify" style="display: none; margin-top: 10px;" />
+          </div>
+          <div class="form-group full">
+            <label>Deposit policy <span class="opt">(optional)</span></label>
+            <textarea name="deposit_policy" rows="3" placeholder='Do you require a deposit to book? If so, how much and how do customers pay it?'></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Common caller questions -->
+      <div class="section">
+        <div class="section-title">5. Common caller questions</div>
+        <div class="section-sub">What callers actually ask, and what you'd rather handle yourself.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Top 5 questions callers ask <span class="req">*</span></label>
+            <textarea name="top_questions" rows="6" required placeholder="Just bullet them out — answers are optional but helpful.&#10;&#10;Example:&#10;- How much for a standard visit?&#10;- Do you bring your own supplies?&#10;- How far out are you booked?&#10;- Do you do same-day appointments?&#10;- Do you take Zelle?"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Questions you want to handle yourself <span class="req">*</span></label>
+            <textarea name="route_to_owner" rows="3" required placeholder='e.g. "Anything about refunds, custom packages, or special accommodations."'></textarea>
+            <p class="field-hint">Some questions are better answered by you personally. List anything the receptionist should pass along instead of answering.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Languages -->
+      <div class="section">
+        <div class="section-title">6. Languages</div>
+        <div class="section-sub">What other languages your team can offer.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Languages you or your staff speak (besides English) <span class="opt">(optional)</span></label>
+            <input type="text" name="languages" placeholder="e.g., Spanish, Arabic, Hindi" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 7: Staff & pronunciation -->
+      <div class="section">
+        <div class="section-title">7. Staff and pronunciation</div>
+        <div class="section-sub">Any names the receptionist might mention.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Staff or instructor names <span class="opt">(optional)</span></label>
+            <textarea name="staff_names" rows="4" placeholder='List anyone the receptionist might mention, with pronunciation if tricky.&#10;&#10;Example:&#10;Maria — "muh-REE-uh"&#10;Priya — "PREE-uh"'></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 8: Edge cases -->
+      <div class="section">
+        <div class="section-title">8. Edge cases</div>
+        <div class="section-sub">Off-hours, emergencies, and the weird stuff.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>After-hours calls — how should the receptionist handle them? <span class="req">*</span></label>
+            <textarea name="after_hours" rows="3" required placeholder='e.g. "Take a message and tell them I&#39;ll follow up the next business morning."'></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Emergency or urgent calls — flag differently? <span class="opt">(optional)</span></label>
+            <textarea name="emergency_handling" rows="3" placeholder='e.g. "If someone says it&#39;s urgent, text my cell immediately."'></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Walk-ins or unusual scenarios <span class="opt">(optional)</span></label>
+            <textarea name="unusual_scenarios" rows="3" placeholder='Anything specific the receptionist should know how to respond to?'></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 9: Voice & tone -->
+      <div class="section">
+        <div class="section-title">9. Voice and tone</div>
+        <div class="section-sub">How the receptionist should sound and who it's talking to.</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Who is your typical customer? <span class="req">*</span></label>
+            <textarea name="ideal_customer" rows="3" required placeholder="Example: Local families looking for reliable service."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>How do you want the receptionist to feel? <span class="req">*</span></label>
             <div class="radio-group">
-              <label class="radio-label"><input type="radio" name="scheduling_method" value="call_back" required /> Owner calls them back</label>
-              <label class="radio-label"><input type="radio" name="scheduling_method" value="text_back" /> Owner texts them back</label>
-              <label class="radio-label"><input type="radio" name="scheduling_method" value="online" /> Online booking link</label>
-              <label class="radio-label"><input type="radio" name="scheduling_method" value="other" /> Other</label>
+              <label class="radio-label"><input type="radio" name="agent_tone" value="Warm and friendly" required /> Warm and friendly</label>
+              <label class="radio-label"><input type="radio" name="agent_tone" value="Professional and efficient" /> Professional and efficient</label>
+              <label class="radio-label"><input type="radio" name="agent_tone" value="Calm and reassuring" /> Calm and reassuring</label>
+              <label class="radio-label"><input type="radio" name="agent_tone" value="Energetic and upbeat" /> Energetic and upbeat</label>
             </div>
           </div>
           <div class="form-group full">
-            <label>Online booking link (if applicable)</label>
-            <input type="url" name="booking_url" placeholder="https://calendly.com/..." />
+            <label>Specific words or phrases you DO want the receptionist to use <span class="opt">(optional)</span></label>
+            <textarea name="phrases_use" rows="2" placeholder='e.g. "Always say &#39;family&#39; instead of &#39;customer.&#39;"'></textarea>
           </div>
           <div class="form-group full">
-            <label>How far out are you currently booked?</label>
-            <input type="text" name="lead_time" placeholder="e.g. 2 weeks, booked through May, immediate availability" />
+            <label>Specific words or phrases you do NOT want the receptionist to use <span class="opt">(optional)</span></label>
+            <textarea name="phrases_avoid" rows="2" placeholder='e.g. "Never say &#39;cheap.&#39; Avoid the word &#39;client.&#39;"'></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Payment -->
+      <!-- Section 10: Final notes -->
       <div class="section">
-        <div class="section-title">Payment</div>
+        <div class="section-title">10. Final notes</div>
         <div class="form-grid">
           <div class="form-group full">
-            <label>How do your clients pay? (check all that apply)</label>
-            <div class="radio-group" style="flex-wrap:wrap;">
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="zelle" /> Zelle</label>
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="venmo" /> Venmo</label>
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="cashapp" /> Cash App</label>
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="cash" /> Cash</label>
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="card" /> Credit/debit card</label>
-              <label class="radio-label"><input type="checkbox" name="payment_methods" value="check" /> Check</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Zelle number or email (if used)</label>
-            <input type="text" name="zelle" placeholder="(555) 000-0000 or name@email.com" />
-          </div>
-          <div class="form-group">
-            <label>Venmo handle (if used)</label>
-            <input type="text" name="venmo" placeholder="@username" />
-          </div>
-          <div class="form-group">
-            <label>Cash App handle (if used)</label>
-            <input type="text" name="cashapp" placeholder="$username" />
-          </div>
-          <div class="form-group">
-            <label>Deposit amount (if required)</label>
-            <input type="text" name="deposit" placeholder="e.g. $100 deposit to hold spot" />
+            <label>Anything else we should know? <span class="opt">(optional)</span></label>
+            <textarea name="final_notes" rows="5" placeholder="The more context, the better the first draft."></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Agent Preferences -->
-      <div class="section">
-        <div class="section-title">Your AI Agent</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Preferred agent name <span class="req">*</span></label>
-            <input type="text" name="agent_name" value="Sarah" required placeholder="Sarah" />
-          </div>
-          <div class="form-group">
-            <label>Agent gender preference</label>
-            <select name="agent_gender">
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="either">No preference</option>
-            </select>
-          </div>
-          <div class="form-group full">
-            <label>Languages spoken (other than English)</label>
-            <input type="text" name="languages" placeholder="e.g. Spanish, Arabic, Hindi" />
-          </div>
-          <div class="form-group full">
-            <label>What should the agent say it is? <span class="req">*</span></label>
-            <div class="radio-group">
-              <label class="radio-label"><input type="radio" name="agent_role" value="receptionist" required /> "I'm the front desk / receptionist"</label>
-              <label class="radio-label"><input type="radio" name="agent_role" value="assistant" /> "I'm an assistant for [owner name]"</label>
-              <label class="radio-label"><input type="radio" name="agent_role" value="custom" /> Custom — describe below</label>
-            </div>
-          </div>
-          <div class="form-group full">
-            <label>Custom agent introduction (optional)</label>
-            <textarea name="agent_intro" rows="2" placeholder="e.g. 'Hi, thanks for calling Smith Driving School, this is Sarah, how can I help you today?'"></textarea>
-          </div>
-          <div class="form-group full">
-            <label>Anything specific the agent should always say or never say?</label>
-            <textarea name="agent_notes" rows="3" placeholder="e.g. Always mention we offer flexible evening slots. Never guarantee same-week availability. Always confirm the caller's name and number before ending."></textarea>
-          </div>
-        </div>
+      <div class="submit-row">
+        <button type="submit" class="submit-btn" id="submit-btn">Send to Alex</button>
+        <p class="submit-error" id="submit-error">Something went wrong. Please email contact@bordman.ai with your details and we'll take it from there.</p>
       </div>
-
-      <!-- Notification Preferences -->
-      <div class="section">
-        <div class="section-title">After-Call Notifications</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Send call summary to this phone <span class="req">*</span></label>
-            <input type="tel" name="notify_phone" required placeholder="(810) 305-4392" />
-          </div>
-          <div class="form-group">
-            <label>Send call summary to this email <span class="req">*</span></label>
-            <input type="email" name="notify_email" required placeholder="you@yourbusiness.com" />
-          </div>
-        </div>
-      </div>
-
-      <button type="submit" class="submit-btn">Submit — let's get Sarah live</button>
-      <p class="note">Alex will review this and reach out within 24 hours to confirm everything before going live.</p>
     </form>
 
+    <div class="confirmation" id="confirmation">
+      <h2>Got it.</h2>
+      <p>Alex will be in touch within 48 hours with your receptionist demo. Talk soon.</p>
+    </div>
+
+    <p class="intake-footer">
+      Questions? Email <a href="mailto:contact@bordman.ai">contact@bordman.ai</a>
+    </p>
+
   </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('intake-form');
+      var confirmation = document.getElementById('confirmation');
+      var submitBtn = document.getElementById('submit-btn');
+      var errorEl = document.getElementById('submit-error');
+      var STORAGE_KEY = 'bordman-intake-draft-v1';
+
+      // ── localStorage draft save/restore ──
+      function saveDraft() {
+        try {
+          var data = {};
+          var fd = new FormData(form);
+          fd.forEach(function (val, key) {
+            // checkboxes: collect as arrays
+            if (data[key] !== undefined) {
+              if (!Array.isArray(data[key])) data[key] = [data[key]];
+              data[key].push(val);
+            } else {
+              data[key] = val;
+            }
+          });
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) { /* localStorage may be unavailable; ignore */ }
+      }
+      function restoreDraft() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          Object.keys(data).forEach(function (key) {
+            var val = data[key];
+            var fields = form.querySelectorAll('[name="' + key + '"]');
+            if (!fields.length) return;
+            fields.forEach(function (field) {
+              if (field.type === 'checkbox' || field.type === 'radio') {
+                var values = Array.isArray(val) ? val : [val];
+                field.checked = values.indexOf(field.value) !== -1;
+              } else {
+                field.value = Array.isArray(val) ? val.join(', ') : val;
+              }
+            });
+          });
+        } catch (e) { /* ignore */ }
+      }
+      restoreDraft();
+      form.addEventListener('input', saveDraft);
+      form.addEventListener('change', saveDraft);
+
+      // ── "Other" payment method conditional input ──
+      var otherCheckbox = document.getElementById('payment-other-checkbox');
+      var otherInput = document.getElementById('payment-other-input');
+      function syncOtherInput(focusOnShow) {
+        if (otherCheckbox.checked) {
+          otherInput.style.display = '';
+          if (focusOnShow) otherInput.focus();
+        } else {
+          otherInput.value = '';
+          otherInput.style.display = 'none';
+          saveDraft();
+        }
+      }
+      if (otherCheckbox && otherInput) {
+        otherCheckbox.addEventListener('change', function () { syncOtherInput(true); });
+        // Restore visibility on page load if checkbox was previously checked (no auto-focus)
+        syncOtherInput(false);
+      }
+
+      // ── Submit handler ──
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        var fd = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: fd,
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (res) {
+            if (res.ok) {
+              form.style.display = 'none';
+              confirmation.style.display = 'block';
+              try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              throw new Error('Submission failed');
+            }
+          })
+          .catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send to Alex';
+            errorEl.style.display = 'block';
+          });
+      });
+    })();
+  </script>
 </body>
 </html>
