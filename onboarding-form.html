@@ -432,6 +432,13 @@
       }
 
       // ── Submit handler ──
+      function showError(message) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send to Alex';
+        if (message) errorEl.textContent = message;
+        errorEl.style.display = 'block';
+      }
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         errorEl.style.display = 'none';
@@ -445,19 +452,38 @@
           headers: { 'Accept': 'application/json' }
         })
           .then(function (res) {
-            if (res.ok) {
+            return res.json().then(function (body) {
+              return { status: res.status, ok: res.ok, body: body };
+            }).catch(function () {
+              return { status: res.status, ok: res.ok, body: null };
+            });
+          })
+          .then(function (result) {
+            console.log('[Bordman intake] Formspree response:', result);
+            // Treat as success ONLY if HTTP 2xx AND body says ok:true
+            var bodyOk = result.body && result.body.ok === true;
+            if (result.ok && bodyOk) {
               form.style.display = 'none';
               confirmation.style.display = 'block';
               try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
               window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-              throw new Error('Submission failed');
+              return;
             }
+            // Build a helpful error message from Formspree's response.
+            var msg = 'Something went wrong. Please email contact@bordman.ai with your details and we\'ll take it from there.';
+            if (result.body && Array.isArray(result.body.errors) && result.body.errors.length) {
+              var detail = result.body.errors.map(function (err) {
+                return err.message || err.code || JSON.stringify(err);
+              }).join('; ');
+              msg = 'Submission error: ' + detail + '. If this persists, email contact@bordman.ai.';
+            } else if (!result.ok) {
+              msg = 'Submission failed (HTTP ' + result.status + '). Please email contact@bordman.ai with your details and we\'ll take it from there.';
+            }
+            showError(msg);
           })
-          .catch(function () {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send to Alex';
-            errorEl.style.display = 'block';
+          .catch(function (err) {
+            console.error('[Bordman intake] Submit failed:', err);
+            showError('Network error reaching the form server. Please email contact@bordman.ai with your details and we\'ll take it from there.');
           });
       });
     })();
