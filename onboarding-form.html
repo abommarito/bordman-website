@@ -151,7 +151,7 @@
           </div>
           <div class="form-group">
             <label>Website URL <span class="opt">(optional)</span></label>
-            <input type="url" name="website" placeholder="https://" />
+            <input type="text" name="website" inputmode="url" autocapitalize="none" placeholder="bordman.ai" />
           </div>
           <div class="form-group">
             <label>Social media links <span class="opt">(optional)</span></label>
@@ -439,6 +439,22 @@
         errorEl.style.display = 'block';
       }
 
+      // Field names that should be normalized to a full URL on submit.
+      // If the user enters "bordman.ai" or "www.bordman.ai", we prepend "https://".
+      var URL_FIELDS = ['website'];
+      function normalizeUrlFields(fd) {
+        URL_FIELDS.forEach(function (name) {
+          var val = fd.get(name);
+          if (typeof val !== 'string') return;
+          var trimmed = val.trim();
+          if (!trimmed) { fd.set(name, ''); return; }
+          if (!/^https?:\/\//i.test(trimmed)) {
+            trimmed = 'https://' + trimmed.replace(/^\/+/, '');
+          }
+          fd.set(name, trimmed);
+        });
+      }
+
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         errorEl.style.display = 'none';
@@ -446,6 +462,7 @@
         submitBtn.textContent = 'Sending...';
 
         var fd = new FormData(form);
+        normalizeUrlFields(fd);
         fetch(form.action, {
           method: 'POST',
           body: fd,
