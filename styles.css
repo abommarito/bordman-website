@@ -119,12 +119,17 @@ p { color: #4A4640; }
 /* Top-right text link with underline-draw on hover */
 .nav-link {
   position: relative;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--navy);
   text-decoration: none;
   letter-spacing: -0.005em;
   padding: 4px 2px;
+  /* Pull inward so its visual center mirrors the logo's visual center
+     (the logo wordmark is ~200px wide; Contact is ~75px — without this
+     offset, Contact's center sits ~65px closer to the viewport edge
+     than the logo's center does). */
+  margin-right: 64px;
   transition: color 0.2s ease;
 }
 .nav-link::after {
@@ -603,5 +608,6 @@ textarea { resize: vertical; }
   .form-row { grid-template-columns: 1fr; }
   .nav-cta { display: none; }
   .nav-inner .btn-primary { display: none; }
+  .nav-link { margin-right: 0; font-size: 15px; }
   .demo-cta .btn-primary { font-size: 18px; padding: 16px 32px; }
 }
