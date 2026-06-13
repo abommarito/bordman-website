@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bordman — Contact</title>
+  <meta name="description" content="Get in touch with Bordman. It comes straight to the founder and you'll get a personal reply." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo-link"><img src="logo-light.svg" alt="Bordman" class="logo-img" /></a>
+      <a href="/contact" class="btn btn-primary">Want a demo built for your business?</a>
+    </div>
+  </nav>
+
+  <!-- CONTACT PAGE -->
+  <section class="contact-page">
+    <div class="container contact-page-inner">
+
+      <!-- Left column: persuasion copy -->
+      <div class="contact-page-copy">
+        <h1>Talk to the person who built it.</h1>
+        <p class="contact-page-sub">Get in touch. It comes straight to me, and I'll get back to you personally.</p>
+      </div>
+
+      <!-- Right column: form card -->
+      <div class="contact-page-card">
+        <form id="contact-form" method="POST" action="https://formspree.io/f/mbdwlzgl" novalidate>
+          <input type="hidden" name="_subject" value="New Bordman contact inquiry" />
+
+          <div class="cp-group">
+            <label for="cp-name">Name <span class="req">*</span></label>
+            <input type="text" id="cp-name" name="name" required autocomplete="name" />
+          </div>
+
+          <div class="cp-group">
+            <label for="cp-email">Email <span class="req">*</span></label>
+            <input type="email" id="cp-email" name="email" required autocomplete="email" />
+          </div>
+
+          <div class="cp-group">
+            <label for="cp-phone">Phone <span class="opt">(optional)</span></label>
+            <input type="tel" id="cp-phone" name="phone" autocomplete="tel" />
+          </div>
+
+          <div class="cp-group">
+            <label for="cp-message">What can we help you with? <span class="req">*</span></label>
+            <textarea id="cp-message" name="message" rows="5" required></textarea>
+          </div>
+
+          <button type="submit" class="cp-submit" id="cp-submit">Send</button>
+          <p class="cp-error" id="cp-error" role="alert">Something went wrong. Please email contact@bordman.ai and we'll take it from there.</p>
+        </form>
+
+        <div class="cp-confirmation" id="cp-confirmation" role="status">
+          <h2>Got it.</h2>
+          <p>Thanks — I'll be in touch personally within 24 hours.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-wordmark">bordman</span>
+        <p>AI receptionists for local businesses.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/contact">Contact</a>
+        <a href="https://bordman.ai">bordman.ai</a>
+        <a href="tel:5865005166">(586) 500-5166 (demo line)</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 Bordman. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('contact-form');
+      var confirmation = document.getElementById('cp-confirmation');
+      var submitBtn = document.getElementById('cp-submit');
+      var errorEl = document.getElementById('cp-error');
+
+      function showError(message) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send';
+        if (message) errorEl.textContent = message;
+        errorEl.style.display = 'block';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        var fd = new FormData(form);
+
+        fetch(form.action, {
+          method: 'POST',
+          body: fd,
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (res) {
+            return res.json().then(function (body) {
+              return { status: res.status, ok: res.ok, body: body };
+            }).catch(function () {
+              return { status: res.status, ok: res.ok, body: null };
+            });
+          })
+          .then(function (result) {
+            console.log('[Bordman contact] Formspree response:', result);
+            var bodyOk = result.body && result.body.ok === true;
+            if (result.ok && bodyOk) {
+              form.style.display = 'none';
+              confirmation.style.display = 'block';
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              return;
+            }
+            var msg = 'Something went wrong. Please email contact@bordman.ai and we\'ll take it from there.';
+            if (result.body && Array.isArray(result.body.errors) && result.body.errors.length) {
+              var detail = result.body.errors.map(function (err) {
+                return err.message || err.code || JSON.stringify(err);
+              }).join('; ');
+              msg = 'Submission error: ' + detail + '. If this persists, email contact@bordman.ai.';
+            } else if (!result.ok) {
+              msg = 'Submission failed (HTTP ' + result.status + '). Please email contact@bordman.ai and we\'ll take it from there.';
+            }
+            showError(msg);
+          })
+          .catch(function (err) {
+            console.error('[Bordman contact] Submit failed:', err);
+            showError('Network error reaching the form server. Please email contact@bordman.ai and we\'ll take it from there.');
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
