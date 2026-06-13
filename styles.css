@@ -93,6 +93,12 @@ p { color: #4A4640; }
   height: 44px;
   width: auto;
   display: block;
+  /* The SVG has a built-in 34-unit leading offset before the "b" glyph
+     (x="34" on the wordmark text). At height: 44px that bakes in ~22px
+     of empty space inside the img. Pull the img left by that amount so
+     the visible "b" aligns with the footer wordmark and the body
+     container's left edge. */
+  margin-left: -22px;
 }
 .footer-logo {
   height: 36px;
