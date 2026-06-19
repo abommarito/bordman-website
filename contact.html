@@ -32,7 +32,7 @@
 
       <!-- Right column: form card -->
       <div class="contact-page-card">
-        <form id="contact-form" method="POST" action="https://formspree.io/f/mbdwlzgl" novalidate>
+        <form id="contact-form" method="POST" action="https://formspree.io/f/mbdwlzgl">
           <input type="hidden" name="_subject" value="New Bordman contact inquiry" />
 
           <div class="cp-group">
@@ -102,6 +102,13 @@
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Validation gate — block empty/invalid input before any fetch fires.
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
         errorEl.style.display = 'none';
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
